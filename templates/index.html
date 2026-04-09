@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>QR Attendance</title>
+    <title>QR Scanner</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
 
 <div class="container">
-    <h2>QR Attendance System</h2>
+    <h2>Scan QR to Mark Attendance</h2>
 
-    <img src="{{ url_for('static', filename='qr.png') }}" width="200">
+    <div id="reader" style="width:300px;"></div>
 
     <form action="/scan" method="post">
-        <br>
-        <input type="text" name="name" placeholder="Enter your name" required>
-        <br><br>
-        <button type="submit">Mark Attendance</button>
+        <input type="hidden" name="name" id="name">
+        <button type="submit">Submit Attendance</button>
     </form>
 </div>
+
+<script>
+function onScanSuccess(decodedText) {
+    document.getElementById("name").value = decodedText;
+}
+let html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { fps: 10, qrbox: 250 }
+);
+html5QrcodeScanner.render(onScanSuccess);
+</script>
 
 </body>
 </html>
