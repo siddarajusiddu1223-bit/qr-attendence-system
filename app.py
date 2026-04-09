@@ -29,3 +29,5 @@ def dashboard():
     count = len(data)
     conn.close()
     return render_template("dashboard.html", data=data, count=count)
+if __name__ == '__main__':
+    app.run(debug=True)
