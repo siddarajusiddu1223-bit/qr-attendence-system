@@ -8,8 +8,23 @@ import pandas as pd
 app = Flask(__name__)
 app.secret_key = "secret123"
 
+# ✅ CREATE TABLE AT START (IMPORTANT FIX)
+conn = sqlite3.connect('database.db')
+cur = conn.cursor()
 
-#  HOME (QR + Scanner)
+cur.execute("""
+CREATE TABLE IF NOT EXISTS attendance (
+    name TEXT,
+    date TEXT,
+    time TEXT
+)
+""")
+
+conn.commit()
+conn.close()
+
+
+# 🏠 HOME (QR + Scanner)
 @app.route('/')
 def index():
     if 'student' not in session:
@@ -25,7 +40,7 @@ def index():
     return render_template("index.html")
 
 
-#  STUDENT LOGIN
+# 👨‍🎓 STUDENT LOGIN
 @app.route('/student_login', methods=['GET', 'POST'])
 def student_login():
     if request.method == 'POST':
@@ -35,9 +50,11 @@ def student_login():
     return render_template('student_login.html')
 
 
-#  TEACHER LOGIN
+# 👩‍🏫 TEACHER LOGIN
 @app.route('/teacher_login', methods=['GET', 'POST'])
 def teacher_login():
+    error = None
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -46,12 +63,12 @@ def teacher_login():
             session['teacher'] = True
             return redirect('/dashboard')
         else:
-            return "Invalid Teacher Login"
+            error = "Invalid Username or Password"
 
-    return render_template('teacher_login.html')
+    return render_template('teacher_login.html', error=error)
 
 
-#  SCAN ATTENDANCE
+# 📸 SCAN ATTENDANCE
 @app.route('/scan', methods=['POST'])
 def scan():
     if 'student' not in session:
@@ -61,14 +78,6 @@ def scan():
 
     conn = sqlite3.connect('database.db')
     cur = conn.cursor()
-
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS attendance (
-        name TEXT,
-        date TEXT,
-        time TEXT
-    )
-    """)
 
     now = datetime.now()
     date = now.strftime("%Y-%m-%d")
@@ -82,7 +91,7 @@ def scan():
     return redirect('/dashboard')
 
 
-#  DASHBOARD (Teacher Only)
+# 📊 DASHBOARD (Teacher Only)
 @app.route('/dashboard')
 def dashboard():
     if 'teacher' not in session:
@@ -91,7 +100,7 @@ def dashboard():
     conn = sqlite3.connect('database.db')
     cur = conn.cursor()
 
-    # All attendance data
+    # All attendance
     cur.execute("SELECT * FROM attendance ORDER BY date DESC, time DESC")
     data = cur.fetchall()
 
@@ -114,7 +123,7 @@ def dashboard():
                            percentage_data=percentage_data)
 
 
-#  CLEAR DATA
+# 🧹 CLEAR DATA
 @app.route('/clear', methods=['POST'])
 def clear():
     if 'teacher' not in session:
@@ -131,7 +140,7 @@ def clear():
     return redirect('/dashboard')
 
 
-#  DOWNLOAD EXCEL
+# 📥 DOWNLOAD EXCEL
 @app.route('/download')
 def download():
     if 'teacher' not in session:
@@ -147,13 +156,13 @@ def download():
     return send_file(file_path, as_attachment=True)
 
 
-#  LOGOUT
+# 🚪 LOGOUT
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect('/student_login')
 
 
-# RUN APP
+# ▶️ RUN APP
 if __name__ == '__main__':
     app.run(debug=True, port=5002)
