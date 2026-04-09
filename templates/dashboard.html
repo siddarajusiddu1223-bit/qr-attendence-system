@@ -8,8 +8,12 @@
 
 <div class="container">
     <h2>Attendance Dashboard</h2>
-
+<h3> Total Attendance: {{ count }} </h3>
     <table border="1" cellpadding="10" style="margin:auto;">
+        <br><br>
+<form action="/clear" method="post">
+    <button type="submit" style="background:red;">Clear All</button>
+</form>
         <tr>
             <th>Name</th>
             <th>Time</th>
