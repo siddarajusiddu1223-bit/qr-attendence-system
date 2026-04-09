@@ -13,15 +13,18 @@
 
     <div id="reader" style="width:300px;"></div>
 
-    <form action="/scan" method="post">
-        <input type="hidden" name="name" id="name">
-        <button type="submit">Submit Attendance</button>
-    </form>
+   <form action="/scan" method="post">
+    <input type="text" id="studentName" placeholder="Enter your name" required>
+    <br><br>
+    <input type="hidden" name="name" id="name">
+    <button type="submit">Submit Attendance</button>
+</form>
 </div>
 
 <script>
 function onScanSuccess(decodedText) {
-    document.getElementById("name").value = decodedText;
+    let student = document.getElementById("studentName").value;
+document.getElementById("name").value = student;
 }
 let html5QrcodeScanner = new Html5QrcodeScanner(
     "reader", { fps: 10, qrbox: 250 }
