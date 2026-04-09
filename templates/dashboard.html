@@ -2,31 +2,34 @@
 <html>
 <head>
     <title>Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="container">
-    <h2>Attendance Dashboard</h2>
-<h3> Total Attendance: {{ count }} </h3>
-    <table border="1" cellpadding="10" style="margin:auto;">
-        <br><br>
-<form action="/clear" method="post">
-    <button type="submit" style="background:red;">Clear All</button>
-</form>
-        <tr>
-            <th>Name</th>
-            <th>Time</th>
-        </tr>
+<h2>Attendance Dashboard</h2>
 
-        {% for row in data %}
-        <tr>
-            <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
+<h3>Total Attendance: {{ count }}</h3>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Time</th>
+    </tr>
+
+    {% for row in data %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br><br>
+
+<form action="/clear" method="post">
+    <button type="submit">Clear All</button>
+</form>
 
 </body>
 </html>
