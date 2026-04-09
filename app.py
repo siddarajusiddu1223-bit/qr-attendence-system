@@ -29,7 +29,6 @@ def dashboard():
     cur = conn.cursor()
     cur.execute("SELECT * FROM attendance")
     data = cur.fetchall()
+    count = len(data)
     conn.close()
-    return render_template("dashboard.html", data=data)
-if __name__ == '__main__':
-    app.run(debug=True)
+    return render_template("dashboard.html", data=data, count=count)
