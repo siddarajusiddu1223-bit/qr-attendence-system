@@ -1,39 +1,74 @@
+/* 🌄 BODY BACKGROUND */
 body {
+    margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
+
+    background: url('/static/college.jpg') no-repeat center center fixed;
+    background-size: cover;
+
     text-align: center;
     color: #333;
 }
 
-.container {
-    background: white;
-    padding: 30px;
-    margin: 50px auto;
-    width: 400px;
-    border-radius: 15px;
-    box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+/* 🌑 DARK OVERLAY */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
 }
+
+/* 📦 MAIN CONTAINER */
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    margin: 80px auto;
+    width: 350px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.3);
+}
+
+
+.logo {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
 
 h2 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
+h3 {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+
 input {
+    width: 90%;
     padding: 10px;
-    width: 80%;
     border-radius: 8px;
     border: 1px solid #ccc;
+    margin-bottom: 10px;
 }
+
 
 button {
     padding: 10px 20px;
-    background: #4facfe;
-    border: none;
+    background: #0077b6;
     color: white;
+    border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
+
 button:hover {
-    background: #007bff;
+    background: #023e8a;
 }
