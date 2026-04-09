@@ -12,14 +12,11 @@ def index():
     img = qrcode.make("Scan to mark attendance")
     img.save("static/qr.png")
     return render_template("index.html")
-@app.route('/scan', methods=['POST'])
-def scan():
-    name = request.form['name']
+@app.route('/clear', methods=['POST'])
+def clear():
     conn = sqlite3.connect('database.db')
     cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS attendance (name TEXT, time TEXT)")
-    time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    cur.execute("INSERT INTO attendance VALUES (?, ?)", (name, time))
+    cur.execute("DELETE FROM attendance")
     conn.commit()
     conn.close()
     return redirect('/dashboard')
