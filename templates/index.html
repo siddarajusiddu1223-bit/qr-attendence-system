@@ -1,10 +1,23 @@
-<h2>QR Attendance System</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Attendance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-<img src="{{ url_for('static', filename='qr.png') }}" width="200">
+<div class="container">
+    <h2>QR Attendance System</h2>
 
-<form action="/scan" method="post">
-    <br><br>
-    Enter Name: <input type="text" name="name" required>
-    <br><br>
-    <button type="submit">Mark Attendance</button>
-</form>
+    <img src="{{ url_for('static', filename='qr.png') }}" width="200">
+
+    <form action="/scan" method="post">
+        <br>
+        <input type="text" name="name" placeholder="Enter your name" required>
+        <br><br>
+        <button type="submit">Mark Attendance</button>
+    </form>
+</div>
+
+</body>
+</html>
