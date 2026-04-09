@@ -9,7 +9,7 @@ app = Flask(__name__)
 def index():
     if not os.path.exists("static"):
         os.makedirs("static")
-    img = qrcode.make("Scan to mark attendance")
+    img = qrcode.make("Namratha")
     img.save("static/qr.png")
     return render_template("index.html")
 @app.route('/clear', methods=['POST'])
