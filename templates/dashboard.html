@@ -1,16 +1,28 @@
-<h2>Attendance Dashboard</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-<table border="1" cellpadding="10">
-<tr>
-    <th>Name</th>
-    <th>Time</th>
-</tr>
+<div class="container">
+    <h2>Attendance Dashboard</h2>
 
-{% for row in data %}
-<tr>
-    <td>{{ row[0] }}</td>
-    <td>{{ row[1] }}</td>
-</tr>
-{% endfor %}
+    <table border="1" cellpadding="10" style="margin:auto;">
+        <tr>
+            <th>Name</th>
+            <th>Time</th>
+        </tr>
 
-</table>
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>
