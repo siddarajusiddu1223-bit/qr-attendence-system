@@ -30,15 +30,24 @@ def index():
     if 'student' not in session:
         return redirect('/student_login')
 
-    if not os.path.exists("static"):
-        os.makedirs("static")
-
+    # This part generates the QR code file
     today = datetime.now().strftime("%Y-%m-%d")
     img = qrcode.make(today)
     img.save("static/qr.png")
 
     return render_template("index.html")
 
+@app.route('/show_qr')
+def show_qr():
+    if 'teacher' not in session:
+        return redirect('/teacher_login')
+        
+    # Generate the QR for today
+    today = datetime.now().strftime("%Y-%m-%d")
+    img = qrcode.make(today)
+    img.save("static/qr.png")
+    
+    return render_template("index.html")
 
 # 👨‍🎓 STUDENT LOGIN
 @app.route('/student_login', methods=['GET', 'POST'])
