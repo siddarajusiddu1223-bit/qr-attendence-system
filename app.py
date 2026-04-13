@@ -71,46 +71,59 @@ def teacher_login():
 # 📸 SCAN ATTENDANCE
 @app.route('/scan', methods=['POST'])
 def scan():
-    # Retrieve the name from the form instead of just the session
-    name = request.form.get('name') or session.get('student')
-    
-    if not name:
-        return redirect('/student_login')
+    if 'student' not in session:
+        return redirect('/student_login') #
 
-    # ... rest of your database logic ...
+    name = session['student'] #
+
+    conn = sqlite3.connect('database.db') #
+    cur = conn.cursor() #
+
+    now = datetime.now() #
+    date = now.strftime("%Y-%m-%d") #
+    time = now.strftime("%H:%M:%S") #
+
+    cur.execute("INSERT INTO attendance VALUES (?, ?, ?)", (name, date, time)) #
+
+    conn.commit() #
+    conn.close() #
+
+    # CRITICAL: This return must be present and properly aligned 
+    # to redirect the user after the scan is successful.
+    return redirect('/dashboard') #
 
 
 # 📊 DASHBOARD (Teacher Only)
+
 @app.route('/dashboard')
 def dashboard():
     if 'teacher' not in session:
-        return redirect('/teacher_login')
+        return redirect('/teacher_login') #
 
-    conn = sqlite3.connect('database.db')
-    cur = conn.cursor()
+    conn = sqlite3.connect('database.db') #
+    cur = conn.cursor() #
 
-    # All attendance
-    cur.execute("SELECT * FROM attendance ORDER BY date DESC, time DESC")
-    data = cur.fetchall()
+    cur.execute("SELECT * FROM attendance ORDER BY date DESC, time DESC") #
+    data = cur.fetchall() #
 
-    # Attendance percentage
-    cur.execute("SELECT name, COUNT(*) FROM attendance GROUP BY name")
-    student_counts = cur.fetchall()
+    cur.execute("SELECT name, COUNT(*) FROM attendance GROUP BY name") #
+    student_counts = cur.fetchall() #
 
-    cur.execute("SELECT COUNT(DISTINCT date) FROM attendance")
-    total_days = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(DISTINCT date) FROM attendance") #
+    total_days = cur.fetchone()[0] #
 
-    percentage_data = []
-    for name, count in student_counts:
-        percent = (count / total_days) * 100 if total_days > 0 else 0
-        percentage_data.append((name, count, round(percent, 2)))
+    percentage_data = [] #
+    for name, count_val in student_counts:
+        percent = (count_val / total_days) * 100 if total_days > 0 else 0 #
+        percentage_data.append((name, count_val, round(percent, 2))) #
 
-    conn.close()
+    conn.close() #
 
+    # Pass 'count' so the dashboard shows the total number of records
     return render_template("dashboard.html",
                            data=data,
-                           percentage_data=percentage_data)
-
+                           percentage_data=percentage_data,
+                           count=len(data)) #
 
 # 🧹 CLEAR DATA
 @app.route('/clear', methods=['POST'])
