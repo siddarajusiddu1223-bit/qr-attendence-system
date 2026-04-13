@@ -71,24 +71,13 @@ def teacher_login():
 # 📸 SCAN ATTENDANCE
 @app.route('/scan', methods=['POST'])
 def scan():
-    if 'student' not in session:
+    # Retrieve the name from the form instead of just the session
+    name = request.form.get('name') or session.get('student')
+    
+    if not name:
         return redirect('/student_login')
 
-    name = session['student']
-
-    conn = sqlite3.connect('database.db')
-    cur = conn.cursor()
-
-    now = datetime.now()
-    date = now.strftime("%Y-%m-%d")
-    time = now.strftime("%H:%M:%S")
-
-    cur.execute("INSERT INTO attendance VALUES (?, ?, ?)", (name, date, time))
-
-    conn.commit()
-    conn.close()
-
-    return redirect('/dashboard')
+    # ... rest of your database logic ...
 
 
 # 📊 DASHBOARD (Teacher Only)
