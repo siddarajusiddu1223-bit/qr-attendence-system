@@ -31,6 +31,13 @@ let html5QrcodeScanner = new Html5QrcodeScanner(
 );
 html5QrcodeScanner.render(onScanSuccess);
 </script>
+    
+<div class="container">
+    <h2>Scan QR to Mark Attendance</h2>
 
+    <img src="{{ url_for('static', filename='qr.png') }}" alt="Attendance QR" style="width:200px; height:200px; margin-bottom: 20px;">
+
+    <div id="reader" style="width:300px; margin: 0 auto;"></div>
+    ...
 </body>
 </html>
